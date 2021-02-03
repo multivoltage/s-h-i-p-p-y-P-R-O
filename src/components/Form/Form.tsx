@@ -41,12 +41,12 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
     useEffect(() => {
         register('from', {
             validate: (value) => {
-                return !!value || 'This is required.'
+                return !!value || 'Required.'
             },
         });
         register('to', {
             validate: (value) => {
-                return !!value || 'This is required.'
+                return !!value || 'Required.'
             },
         });
     }, [register]);
@@ -71,6 +71,7 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                                 {...params}
                                 fullWidth
                                 label="From"
+                                test-id="autocomplete-from"
                                 variant="outlined"
                                 error={Boolean(errors?.from)}
                                 helperText={errors?.from?.message}
@@ -101,6 +102,7 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                                 {...params}
                                 fullWidth
                                 label="To"
+                                test-id="autocomplete-to"
                                 error={Boolean(errors?.to)}
                                 helperText={errors.to?.message}
                                 variant="outlined"

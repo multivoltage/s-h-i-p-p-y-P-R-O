@@ -1,0 +1,18 @@
+{
+    "data": [
+        {
+            "id": 111111,
+            "airlineId": 9,
+            "departureAirportId": 3,
+            "arrivalAirportId": 14,
+            "price": 597.07
+        },
+        {
+            "id": 222222,
+            "airlineId": 5,
+            "departureAirportId": 14,
+            "arrivalAirportId": 7,
+            "price": 1652.88
+        }
+    ]
+}

@@ -1,13 +1,19 @@
 {
   "name": "shippypro",
   "version": "0.1.0",
+  "author": {
+    "name": "Diego Tonini",
+    "email": "diego.tonini93@gmail.com"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "ci": "CYPRESS_TESTS=integration start-server-and-test dev http://localhost:3000 cy:run"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -27,7 +33,7 @@
   },
   "engines": {
     "node": ">=14.15.1",
-    "yarn": "^1.22.5"
+    "yarn": ">=1.22.5"
   },
   "devDependencies": {
     "@types/node": "^14.14.22",
