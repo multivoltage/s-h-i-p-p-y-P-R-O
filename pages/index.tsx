@@ -3,36 +3,37 @@ import styles from '../styles/Home.module.css'
 import { Header } from '../src/components/Header'
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { useState } from 'react';
+import { FlyChoser } from '../src/components/Form/FlyChoser';
+import { GetStaticProps } from 'next';
+import { fetchAllAirports } from '../src/useApi';
+import { I_Airport } from '../src/types';
 
-
-export default function Home() {
-  const [darkState,] = useState(false);
-  const palletType = darkState ? "dark" : "light";
-  const darkTheme = createMuiTheme({
-    palette: {
-      type: palletType,
-    }
-  });
-
+interface I_Home {
+  airports: I_Airport[]
+}
+export default function Home(props: I_Home) {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className={styles.container}>
-        <Head>
-          <title>shippypro test</title>
-          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-          <link rel="manifest" href="/site.webmanifest" />
-          <meta name="msapplication-TileColor" content="#da532c" />
-          <meta name="theme-color" content="#ffffff"></meta>
-        </Head>
+    <div className={styles.container}>
+      <Header />
+      <main>
+        <FlyChoser airports={props.airports} />
+      </main>
+      <footer></footer>
+    </div>
 
-        <Header />
-        <main>
-
-        </main>
-        <footer></footer>
-      </div>
-    </ThemeProvider>
   )
+}
+
+/**
+ * We use this list inside form and probably this data will not change every day.
+ * If yes, this part should be converted in server logic or only client
+ */
+export const getStaticProps: GetStaticProps = async () => {
+  const { data } = await fetchAllAirports()
+
+  return {
+    props: {
+      airports: data.data,
+    },
+  }
 }
