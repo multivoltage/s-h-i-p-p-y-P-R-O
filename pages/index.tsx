@@ -13,6 +13,7 @@ interface I_Home {
 }
 export default function Home(props: I_Home) {
   return (
+
     <div className={styles.container}>
       <Header />
       <main>

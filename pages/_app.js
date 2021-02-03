@@ -5,12 +5,14 @@ import React from 'react'
 import Head from 'next/head';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_ENDPOINT
 axios.defaults.headers = {
   "accept": "application/json",
   "Authorization": `Bearer ${process.env.NEXT_PUBLIC_TOKEN_API}`
 };
+const queryClient = new QueryClient()
 
 const palletType = "light";
 const lightTheme = createMuiTheme({
@@ -41,10 +43,12 @@ function MyApp({ Component, pageProps }) {
         <title>test</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={lightTheme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={lightTheme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </QueryClientProvider>
     </React.Fragment>
   )
 }

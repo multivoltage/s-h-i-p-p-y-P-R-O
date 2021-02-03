@@ -1,11 +1,12 @@
-import { useForm } from "react-hook-form";
-import { TextField, Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
+import { useForm, NestedValue } from "react-hook-form";
+import { TextField, Grid, makeStyles, Theme, createStyles, MenuItem, Select } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { I_Airport } from "../../types";
 import { ButtonLoading } from "../CustomElements";
-import classes from "*.module.css";
+import { useEffect } from "react";
 interface I_Form {
     airports: I_Airport[]
+    onSubmitForm: (data: any) => void
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -13,21 +14,50 @@ const useStyles = makeStyles((theme: Theme) =>
         submit: {
             height: '100%'
         },
+        input: {
+            fontSize: '3rem',
+            color: 'red',
+            '& .MuiFormHelperText-root': {
+                position: 'absolute',
+                bottom: -20
+            }
+        }
     })
 );
 
-export const Form: React.FC<I_Form> = ({ airports }) => {
+
+
+export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
     const classes = useStyles()
-    const { register, handleSubmit, watch, errors, reset } = useForm();
-    const onSubmit = (data: any) => console.log(data);
+    const { register, handleSubmit, watch, setValue, errors, getValues, formState } = useForm<{
+        from: NestedValue<I_Airport[]>;
+        to: NestedValue<I_Airport[]>;
+    }>({
+        defaultValues: {
+        },
+    });
+    const onSubmit = handleSubmit(onSubmitForm);
+
+    useEffect(() => {
+        register('from', {
+            validate: (value) => {
+                return !!value || 'This is required.'
+            },
+        });
+        register('to', {
+            validate: (value) => {
+                return !!value || 'This is required.'
+            },
+        });
+    }, [register]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={1}>
+        <form onSubmit={onSubmit}>
+            <Grid container spacing={3}>
                 <Grid item xs={5}>
                     <Autocomplete
                         fullWidth
-                        innerRef={register}
+                        onChange={(e, options) => setValue('from', options)}
                         options={airports}
                         autoHighlight
                         getOptionLabel={(option) => option.codeIata}
@@ -40,12 +70,15 @@ export const Form: React.FC<I_Form> = ({ airports }) => {
                             <TextField
                                 {...params}
                                 fullWidth
-                                innerRef={register}
-                                name="origin"
                                 label="From"
                                 variant="outlined"
+                                error={Boolean(errors?.from)}
+                                helperText={errors?.from?.message}
                                 inputProps={{
                                     ...params.inputProps,
+                                }}
+                                classes={{
+                                    root: classes.input
                                 }}
                             />
                         )}
@@ -54,9 +87,9 @@ export const Form: React.FC<I_Form> = ({ airports }) => {
                 <Grid item xs={5}>
                     <Autocomplete
                         fullWidth
-                        innerRef={register}
                         options={airports}
                         autoHighlight
+                        onChange={(e, options) => setValue('to', options)}
                         getOptionLabel={(option) => option.codeIata}
                         renderOption={(option) => (
                             <>
@@ -67,19 +100,22 @@ export const Form: React.FC<I_Form> = ({ airports }) => {
                             <TextField
                                 {...params}
                                 fullWidth
-                                innerRef={register}
-                                name="destination"
                                 label="To"
+                                error={Boolean(errors?.to)}
+                                helperText={errors.to?.message}
                                 variant="outlined"
                                 inputProps={{
                                     ...params.inputProps,
+                                }}
+                                classes={{
+                                    root: classes.input
                                 }}
                             />
                         )}
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    <ButtonLoading fullWidth disableElevation color="primary" variant="contained" className={classes.submit}>SEARCH</ButtonLoading>
+                    <ButtonLoading fullWidth type="submit" disableElevation color="primary" variant="contained" className={classes.submit}>SEARCH</ButtonLoading>
                 </Grid>
             </Grid>
         </form>
