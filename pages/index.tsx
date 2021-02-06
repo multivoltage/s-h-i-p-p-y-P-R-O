@@ -3,21 +3,22 @@ import styles from '../styles/Home.module.css'
 import { Header } from '../src/components/Header'
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { useState } from 'react';
-import { FlyChoser } from '../src/components/Form/FlyChoser';
+import { FlyChoser } from '../src/components/FlyChoser';
 import { GetStaticProps } from 'next';
-import { fetchAllAirports } from '../src/useApi';
-import { I_Airport } from '../src/types';
+import { fetchAllAirlines, fetchAllAirports } from '../src/useApi';
+import { I_Airline, I_Airport } from '../src/types';
 
 interface I_Home {
   airports: I_Airport[]
+  airlines: I_Airline[]
 }
 export default function Home(props: I_Home) {
-  return (
 
+  return (
     <div className={styles.container}>
       <Header />
       <main>
-        <FlyChoser airports={props.airports} />
+        <FlyChoser airports={props.airports} airlines={props.airlines} />
       </main>
       <footer></footer>
     </div>
@@ -30,11 +31,14 @@ export default function Home(props: I_Home) {
  * If yes, this part should be converted in server logic or only client
  */
 export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await fetchAllAirports()
+  const { data: dataAirports } = await fetchAllAirports()
+  const { data: dataAirlines } = await fetchAllAirlines()
+
 
   return {
     props: {
-      airports: data.data,
+      airports: dataAirports.data,
+      airlines: dataAirlines.data
     },
   }
 }

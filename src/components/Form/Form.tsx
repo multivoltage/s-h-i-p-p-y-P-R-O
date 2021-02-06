@@ -30,12 +30,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
     const classes = useStyles()
     const { register, handleSubmit, watch, setValue, errors, getValues, formState } = useForm<{
-        from: NestedValue<I_Airport[]>;
-        to: NestedValue<I_Airport[]>;
+        from: I_Airport;
+        to: I_Airport;
     }>({
         defaultValues: {
         },
     });
+    const { from, to } = watch();
+
     const onSubmit = handleSubmit(onSubmitForm);
 
     useEffect(() => {
@@ -51,10 +53,11 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
         });
     }, [register]);
 
+
     return (
         <form onSubmit={onSubmit}>
             <Grid container spacing={3}>
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={4}>
                     <Autocomplete
                         fullWidth
                         onChange={(e, options) => setValue('from', options)}
@@ -74,7 +77,7 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                                 test-id="autocomplete-from"
                                 variant="outlined"
                                 error={Boolean(errors?.from)}
-                                helperText={errors?.from?.message}
+                                helperText={Boolean(errors?.from) ? "Required" : undefined}
                                 inputProps={{
                                     ...params.inputProps,
                                 }}
@@ -85,10 +88,10 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                         )}
                     />
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={4}>
                     <Autocomplete
                         fullWidth
-                        options={airports}
+                        options={airports.filter(f => !!from && f.codeIata !== from.codeIata)}
                         autoHighlight
                         onChange={(e, options) => setValue('to', options)}
                         getOptionLabel={(option) => option.codeIata}
@@ -104,7 +107,7 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                                 label="To"
                                 test-id="autocomplete-to"
                                 error={Boolean(errors?.to)}
-                                helperText={errors.to?.message}
+                                helperText={Boolean(errors?.to) ? "Required" : undefined}
                                 variant="outlined"
                                 inputProps={{
                                     ...params.inputProps,
@@ -116,7 +119,7 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                         )}
                     />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} sm={4}>
                     <ButtonLoading fullWidth type="submit" disableElevation color="primary" variant="contained" className={classes.submit}>SEARCH</ButtonLoading>
                 </Grid>
             </Grid>
