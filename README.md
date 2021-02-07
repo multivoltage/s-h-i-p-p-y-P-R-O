@@ -1,4 +1,4 @@
-## Install (require node >=14.15.1 and yarn >=^1.22.5)
+## Install (require node >=12 and yarn >=1.22.5)
 ```bash
 yarn
 ```

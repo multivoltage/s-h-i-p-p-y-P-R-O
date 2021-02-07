@@ -58,7 +58,7 @@ export const Solution: React.FC<I_Solution> = ({ airports, airlines, totalPrice,
 
     return (
         <Grid container spacing={2} alignItems="center" justify="space-between" test-id="row-solution">
-            <Grid item xs={5} md={7}>
+            <Grid item xs={12} md={7}>
                 <Grid container spacing={1} alignItems="center" justify="center">
                     <Grid item className={classes.labelBig}>{origin}</Grid>
                     {intermediates.length > 0 && <>
@@ -74,7 +74,7 @@ export const Solution: React.FC<I_Solution> = ({ airports, airlines, totalPrice,
                     <Grid item className={classes.labelBig}>{destination}</Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={2} md={2} style={{ textAlign: 'center' }}>
+            <Grid item xs={6} md={2} style={{ textAlign: 'center' }}>
                 <Box display="flex" alignItems="center" justifyContent="center">
                     {stopovers === 0 && <span className={classes.labelBig}>DIRECT</span>}
                     {stopovers > 0 &&
@@ -85,7 +85,7 @@ export const Solution: React.FC<I_Solution> = ({ airports, airlines, totalPrice,
                 </Box>
             </Grid>
 
-            <Grid item xs={5} sm={3} style={{ textAlign: 'center' }}>
+            <Grid item xs={6} sm={3} style={{ textAlign: 'center' }}>
                 <div>
                     <span className={classes.labelBig}>€ {IntlNumber(totalPrice)}</span>
                 </div>
@@ -131,9 +131,7 @@ export const Solution: React.FC<I_Solution> = ({ airports, airlines, totalPrice,
             <Grid item xs={12}>
                 <Collapse in={expanded} timeout={600}>
                     <Box position="relative" height={400} test-id="map-container">
-                        <MapContainer center={centerPoint} mapsPoints={mapsPoints}>
-
-                        </MapContainer>
+                        <MapContainer center={centerPoint} mapsPoints={mapsPoints} />
                     </Box>
                 </Collapse>
             </Grid>

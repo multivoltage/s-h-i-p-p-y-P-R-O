@@ -6,8 +6,7 @@ import c from 'clsx'
 import { useFetchFligths } from "../useApi";
 import { splitSolutions } from "../utils";
 import { SolutionList } from "./List/SolutionList";
-import { Skeleton } from "@material-ui/lab";
-import FlightIcon from '@material-ui/icons/Flight';
+import { useSnackbar } from "../hooks/useSnackbar";
 
 interface I_FlyChoser {
     airports: I_Airport[]
@@ -31,15 +30,25 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         formContaineUp: {
             transform: 'initial'
+        },
+        emptyLabel: {
+            color: theme.palette.secondary.main,
+            fontSize: '2rem'
         }
     })
 );
 
 export const FlyChoser: React.FC<I_FlyChoser> = ({ airports, airlines }) => {
     const classes = useStyles()
+    const { show } = useSnackbar()
     const [submitted, setSubmitted] = useState(false)
 
-    const { data, mutate, status, isLoading } = useFetchFligths()
+
+    const { data, mutate, status, isLoading } = useFetchFligths({
+        onError() {
+            show({ severity: "error", text: "There was an error, please retry later", timeout: 3000 })
+        }
+    })
     const formContainerClasses = c(classes.formContainer, {
         [classes.formContaineUp]: submitted
     })
@@ -64,12 +73,13 @@ export const FlyChoser: React.FC<I_FlyChoser> = ({ airports, airlines }) => {
             </Paper>
             <Box mt="2rem" height="100%" flex="1 0 auto">
                 {solutions.length > 0 && <SolutionList solutions={solutions} airports={airports} airlines={airlines} />}
-                {isLoading && <Box display="flex" alignItems="center" justifyContent="center" flex="1">
-                    <CircularProgress />
+                {isLoading && <Box display="flex" alignItems="center" justifyContent="center" flex="1" mt="2rem">
+                    <CircularProgress color="secondary" />
+                </Box>}
+                {status === "success" && solutions.length === 0 && <Box display="flex" alignItems="center" justifyContent="center" flex="1" mt="2rem">
+                    <span className={classes.emptyLabel}>No flights founded :(</span>
                 </Box>}
             </Box>
-
-
         </Box>
     )
 }

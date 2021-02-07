@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { I_Airline, I_Airport, I_Flight } from './types'
-import { useMutation } from 'react-query'
+import { UseMutateFunction, useMutation, UseMutationOptions } from 'react-query'
 
 // ENDPOINTS
 export const ENDPOINT_AIRPORT_ALL = "/airports/all"
@@ -20,7 +20,7 @@ export const fetchFligths = (from: string, to: string) => axios.get<{ data: I_Fl
 
 export const fetchAllAirlines = () => axios.get<{ data: I_Airline[] }>(ENDPOINT_AIRLINES_ALL)
 
-export function useFetchFligths() {
+export function useFetchFligths(options?: UseMutationOptions<AxiosResponse<{ data: I_Flight[]; }>, unknown, { from: string; to: string; }, unknown>) {
     const promise = ({ from, to }: { from: string, to: string }) => fetchFligths(from, to)
-    return useMutation(promise);
+    return useMutation(promise, options);
 }
