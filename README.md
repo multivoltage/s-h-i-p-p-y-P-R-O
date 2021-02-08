@@ -17,12 +17,12 @@ yarn ci
 ```
 
 ## Considerations
-- Why I choose materia ui? 
+- Why I choosed materia ui? 
 Because it works well, with a lot of components out of the box.
 - Why I put redux?
-Probably is overkill but in all project I need a global modal/snackbar and redux (or context api) allow me to put a single istance of component
-- Why I use next js?
-Becase a static site/server side render is more perfomant, and better seo. Next js allows to developer each page based on requirements and choose logic in a easy way. I choosed to load with a static logic the data for airport and airlines. This means that each time data change at database it' s better to build the site again.
+Probably is overkill but in all project I need a global modal/snackbar and redux (or context api) which allows me to put a single istance of component (example GlobalSnackbar)
+- Why I used next js?
+Becase a static site/server side render is more perfomant, and has better seo. Next js allows to develope each page based on requirements and choose logic in a easy way. I choosed to load with a static logic the data for airport and airlines. This means that each time data change at database it' s better to build the site again.
 
 ## Api from https://react-dev.recruitment.shippypro.com/
 

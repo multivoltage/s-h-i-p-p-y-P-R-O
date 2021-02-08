@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const FlyChoser: React.FC<I_FlyChoser> = ({ airports, airlines }) => {
     const classes = useStyles()
+
     const { show } = useSnackbar()
     const [submitted, setSubmitted] = useState(false)
-
 
     const { data, mutate, status, isLoading } = useFetchFligths({
         onError() {
@@ -52,7 +52,6 @@ export const FlyChoser: React.FC<I_FlyChoser> = ({ airports, airlines }) => {
     const formContainerClasses = c(classes.formContainer, {
         [classes.formContaineUp]: submitted
     })
-
 
     function onSubmitForm(data: any) {
         const { from, to }: { from: I_Airport | undefined, to: I_Airport | undefined } = data
@@ -72,7 +71,7 @@ export const FlyChoser: React.FC<I_FlyChoser> = ({ airports, airlines }) => {
                 </Box>
             </Paper>
             <Box mt="2rem" height="100%" flex="1 0 auto">
-                {solutions.length > 0 && <SolutionList solutions={solutions} airports={airports} airlines={airlines} />}
+                {solutions.length > 0 && !isLoading && <SolutionList solutions={solutions} airports={airports} airlines={airlines} />}
                 {isLoading && <Box display="flex" alignItems="center" justifyContent="center" flex="1" mt="2rem">
                     <CircularProgress color="secondary" />
                 </Box>}

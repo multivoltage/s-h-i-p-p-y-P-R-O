@@ -1,5 +1,5 @@
-import { useForm, NestedValue } from "react-hook-form";
-import { TextField, Grid, makeStyles, Theme, createStyles, MenuItem, Select } from "@material-ui/core";
+import { useForm } from "react-hook-form";
+import { TextField, Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { I_Airport } from "../../types";
 import { ButtonLoading } from "../CustomElements";
@@ -29,14 +29,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
     const classes = useStyles()
-    const { register, handleSubmit, watch, setValue, errors, getValues, formState } = useForm<{
+    const { register, handleSubmit, watch, setValue, errors } = useForm<{
         from: I_Airport;
         to: I_Airport;
     }>({
-        defaultValues: {
-        },
+        defaultValues: {},
     });
-    const { from, to } = watch();
+    const { from } = watch();
 
     const onSubmit = handleSubmit(onSubmitForm);
 
@@ -52,7 +51,6 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
             },
         });
     }, [register]);
-
 
     return (
         <form onSubmit={onSubmit}>
@@ -91,7 +89,7 @@ export const Form: React.FC<I_Form> = ({ airports, onSubmitForm }) => {
                 <Grid item xs={12} sm={4}>
                     <Autocomplete
                         fullWidth
-                        options={airports.filter(f => !!from && f.codeIata !== from.codeIata)}
+                        options={airports.filter(f => !!from ? f.codeIata !== from.codeIata : true)}
                         autoHighlight
                         onChange={(e, options) => setValue('to', options)}
                         getOptionLabel={(option) => option.codeIata}
