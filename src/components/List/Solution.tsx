@@ -1,4 +1,4 @@
-import { Box, createStyles, Divider, Grid, makeStyles, Theme, IconButton, Fade, Collapse } from "@material-ui/core"
+import { Box, createStyles, Divider, Grid, makeStyles, Theme, IconButton, Collapse } from "@material-ui/core"
 import React, { useMemo, useState } from "react"
 import { IntlNumber, getMediumPoint } from "../../utils"
 import FlightIcon from '@material-ui/icons/Flight';
@@ -128,8 +128,9 @@ export const Solution: React.FC<I_Solution> = ({ airports, airlines, totalPrice,
                     <ExpandMoreIcon fontSize="large" />
                 </IconButton>
             </Grid>
+
             <Grid item xs={12}>
-                <Collapse in={expanded} timeout={600}>
+                <Collapse in={expanded} timeout={300}>
                     <Box position="relative" height={400} test-id="map-container">
                         <MapContainer center={centerPoint} mapsPoints={mapsPoints} />
                     </Box>
